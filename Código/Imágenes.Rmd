@@ -36,3 +36,30 @@ ggplot(data = inflacion, aes(x = Periodo, y = `Porcentual interanual`)) +
 
 ```
 
+# Inflación Media según esquema de política
+
+```{r Media de inflación}
+
+# Considerando el pico de inflación Enero 1991
+
+inflacion %>% group_by(Esquema) %>% 
+  summarise("media inflación" = mean(`Porcentual interanual`))
+
+# Sin considerar el pico de inflación 
+# Calculos desde enero 1992
+
+inflacion[c(37:402),] %>% group_by(Esquema) %>% 
+  summarise("media inflación" = mean(`Porcentual interanual`))
+
+```
+
+
+# Prueba Dickey-Fuller para el periodo EMEI
+
+```{r}
+
+# Prueba para el periodo EMEI
+tseries::adf.test(inflacion$`Porcentual interanual`[c(193:402)])
+
+```
+
