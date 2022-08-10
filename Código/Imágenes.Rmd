@@ -14,6 +14,8 @@ inflacion <- read_excel(path = "~/PES/Para la tesis/Tesis/Pass through/Datos/Dat
                                        "numeric", "numeric", "numeric",
                                        "numeric", "numeric"))
 
+# Generando la columna que distingue los tipos de esquema de política monetaria
+
 inflacion <- inflacion %>% mutate("Esquema" = case_when(Periodo < as.Date("2005-01-01") ~ "Agregados Monetarios",
                                   Periodo >= as.Date("2005-01-01") ~ "Metas de Inflación"))
 ```
@@ -27,12 +29,15 @@ ggplot(data = inflacion, aes(x = Periodo, y = `Porcentual interanual`)) +
   geom_smooth(method = "loess" ,se = FALSE, color = "black", size = 1) +
   labs(y = "Porcentual", x = "") +
   
-  theme_classic(base_size = 16) +
+  theme_bw(base_size = 16) +
   
   scale_color_brewer(palette = "Set1") +
   
   theme(legend.title = element_blank(),
         legend.position = "bottom")
+
+# En geom_smooth se agrego la linea de tendencia mediante
+# una gregresión local (LOESS).
 
 ```
 
@@ -40,7 +45,7 @@ ggplot(data = inflacion, aes(x = Periodo, y = `Porcentual interanual`)) +
 
 ```{r Media de inflación}
 
-# Considerando el pico de inflación Enero 1991
+# Considerando el pico de inflación hasta Enero 1991
 
 inflacion %>% group_by(Esquema) %>% 
   summarise("media inflación" = mean(`Porcentual interanual`))
@@ -62,4 +67,26 @@ inflacion[c(37:402),] %>% group_by(Esquema) %>%
 tseries::adf.test(inflacion$`Porcentual interanual`[c(193:402)])
 
 ```
+
+# Gráfica del tipo de cambio
+## Datos del tipo de cambio
+
+```{r Datos tipo de cambio}
+
+tc <- read_excel(path = "~/PES/Para la tesis/Tesis/Pass through/Datos/Datos.xlsx", 
+                        sheet = "TC 1995-2022", range = "A1:K331")
+```
+
+# Gráfica evolución del tipo ce cambio 1995-2022
+```{r Gráfica}
+
+ggplot(data = tc, aes(x = periodo, y = `Promedio simple`)) +
+  geom_line(size = 1.5) +
+  ylim(c(4,9)) +
+  labs(y = "Tipo de cambio", x = "") +
+  theme_bw(base_size = 16) 
+
+```
+
+
 
