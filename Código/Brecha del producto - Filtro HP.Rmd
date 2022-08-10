@@ -1,0 +1,157 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+# Aplicación del filtro Hodrick-Prescott
+
+Se aplicó el filtro Hodrick-Prescott sobre la serie del IMAE para obtener la brecha del producto (el componente cíclico). Para ello debemos recordar que dada la construcción del filtro es necesario que la serie esté desestacionalizada, por lo que se utilizará el método x11-ARIMA sobre la serie original[^1].
+
+```{r, Datos y librerias, echo=FALSE, include=FALSE}
+
+library(readxl)
+library(mFilter)
+library(tidyverse)
+library(gridExtra)
+library(openxlsx)
+library(seasonal)
+
+IMAE_TC <- read_excel("~/PES/Para la tesis/Tesis/Pass through/Datos/Datos.xlsx", sheet = "IMAE", range = "A1:C258")
+IMAE_TC <- IMAE_TC %>% select(Período, `Serie original`)
+
+# Como serie de tiempo
+IMAE_TC.ts <- ts(data = IMAE_TC$`Serie original`, start = c(2001, 1), end = c(2022, 5), frequency = 12)
+```
+
+# Visualización de la serie del IMAE
+
+Cómo puede observarse la serie presenta un componente estacional que debe ser eliminado para poder aplicar el filtro Hodrick-Prescott y estimar la brecha del producto.
+
+```{r, echo=FALSE}
+
+IMAE.plot <- IMAE_TC %>% ggplot(aes(x = Período, y = `Serie original`)) +
+  geom_line(colour = "#2A5783", size = 1) +
+  theme_classic() +
+  labs(title = "Comportamiento histórico IMAE \n(Guatemala. 2001-2022)",
+       subtitle = "Datos mensuales",
+       caption = "Elaboración propia con base a datos del Banco de Guatemala", 
+       y = "IMAE", x = "") +
+  theme(text = element_text(size = 13),
+        axis.text = element_text(size = 12))
+
+IMAE.plot
+```
+
+# Método x11-ARIMA para desestacionalizar la serie
+
+Mediante la función "seas" del paquete "seasonal" se aplicó el método x11-ARIMA para la descomposición de la serie de tiempo y aplicarleel ajuste estacional. El ajuste estacional se encuentra dentro del objeto creado que en nuestro caso es "IMAE.ajuste".
+
+```{r x11, include=FALSE}
+
+# Aplicación del método x-11 ARIMA
+
+IMAE.ajuste <- seas(IMAE_TC.ts, x11 = "")
+
+# Obteniendo el ajuste estacional e incorporando en la base de datos
+# Primero obtenemos la descomposición de la serie
+
+descomp <- as.data.frame(IMAE.ajuste$data)
+
+# Agregando a la base de datos
+IMAE_TC <- cbind(IMAE_TC, ajuste_estacional = descomp$seasonaladj)
+```
+
+## Serie con ajuste estacional
+
+```{r, echo=FALSE}
+
+IMAE_ajust.plot <- IMAE_TC %>% ggplot(aes(x = Período, y = ajuste_estacional)) +
+  geom_line(colour = "#2A5783", size = 1) +
+  theme_classic() +
+  labs(title = "Serie desestacionalizada del IMAE \n(Guatemala. 2001-2022)",
+       subtitle = "Datos mensuales",
+       caption = "Elaboración propia con base a datos del Banco de Guatemala", 
+       y = "IMAE", x = "") +
+  theme(text = element_text(size = 13),
+        axis.text = element_text(size = 12))
+
+IMAE_ajust.plot
+
+```
+
+# Obtención del ciclo
+Se aplica el filtro Hodrick-Prescott a la serie desestacionalizada del IMAE.
+
+```{r aplicar filtro HP}
+
+IMAE_fHP <- hpfilter(IMAE_TC$ajuste_estacional, type = "lambda", freq = 14400)
+
+# Variación relativa de la brecha
+
+var_brecha <- IMAE_fHP$cycle/IMAE_fHP$trend
+
+IMAE_TC <- cbind.data.frame(IMAE_TC, tendencia = IMAE_fHP$trend, 
+                            ciclo = IMAE_fHP$cycle, var_brecha = var_brecha)
+
+```
+
+
+```{r Grafica var relativa de la brecha, include=FALSE}
+
+brecha.plot <- IMAE_TC %>% ggplot(aes(x = Período, y = var_brecha)) +
+  geom_line(colour = "#F8A254", size = 1.5) +
+  theme_classic() +
+  labs(title = "Variación relativa de la brecha del producto \n(Guatemala. 2001-2022)",
+       subtitle = "Datos mensuales",
+       caption = "Elaboración propia con base a datos del Banco de Guatemala", 
+       y = "", x = "") +
+  geom_hline(yintercept = 0) +
+  theme(text = element_text(size = 13),
+        axis.text = element_text(size = 12))
+
+brecha.plot
+```
+
+```{r Gráficas juntas}
+
+grid.arrange(IMAE.plot, brecha.plot, nrow = 2)
+
+```
+
+# brecha del producto suavizada
+
+```{r eliminando irregular, echo=FALSE}
+
+descomp <- descomp %>% mutate(suavizado = final - irregular)
+
+# aplicación de filtro hp
+
+suavizado <- hpfilter(x = descomp$suavizado, type = "lambda", freq = 14400)
+
+IMAE_TC <- cbind(IMAE_TC, ciclo_suave = suavizado$cycle)
+
+IMAE_TC <-  IMAE_TC %>% select(Período, `Serie original`, ajuste_estacional, tendencia,
+                   ciclo, ciclo_suave, var_brecha)
+
+IMAE_TC %>% ggplot(aes(x = Período, y = ciclo_suave)) +
+  geom_line(colour = "#F8A254") +
+  theme_classic() +
+  labs(title = "Ciclo del producto \n(Guatemala. 2001-2022)",
+       subtitle = "Datos mensuales",
+       caption = "Elaboración propia con base a datos del Banco de Guatemala", 
+       y = "", x = "") +
+  geom_hline(yintercept = 0) +
+  theme(text = element_text(size = 13),
+        axis.text = element_text(size = 12))
+
+```
+
+
+```{r escritura de la brecha relativa, echo=FALSE, include=FALSE}
+
+#write.csv(x = IMAE_TC, file = "IMAE desestacionalizado y brecha del producto.csv")
+
+```
+
+
+[^1]:La serie utilizada es el empalme entre los índices base 2001 y 2013 obtenida de la siguiente página https://www.banguat.gob.gt/es/page/indice-mensual-de-la-actividad-economica-imae-ano-de-referencia-2013. Se utiliza la srie original por que la serie de tendencia-ciclo ya fue tratada de tal forma que fue eliminado de el componente irregular.

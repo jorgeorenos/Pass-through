@@ -1,0 +1,38 @@
+```{r Librerias, echo=FALSE, include=FALSE}
+rm(list = ls())
+library(tidyverse)
+library(readxl)
+```
+
+# Datos a utilizar
+
+```{r Datos}
+
+inflacion <- read_excel(path = "~/PES/Para la tesis/Tesis/Pass through/Datos/Datos.xlsx", 
+                        sheet = "Inflación Guatemala", range = "A1:I403",
+                        col_types = c("date", "numeric", "numeric", "numeric",
+                                       "numeric", "numeric", "numeric",
+                                       "numeric", "numeric"))
+
+inflacion <- inflacion %>% mutate("Esquema" = case_when(Periodo < as.Date("2005-01-01") ~ "Agregados Monetarios",
+                                  Periodo >= as.Date("2005-01-01") ~ "Metas de Inflación"))
+```
+
+# Gráfica de inflación y esquemas de política monetaria
+
+```{r}
+
+ggplot(data = inflacion, aes(x = Periodo, y = `Porcentual interanual`)) + 
+  geom_line(aes(color = Esquema), size = 1.5) +
+  geom_smooth(method = "loess" ,se = FALSE, color = "black", size = 1) +
+  labs(y = "Porcentual", x = "") +
+  
+  theme_classic(base_size = 16) +
+  
+  scale_color_brewer(palette = "Set1") +
+  
+  theme(legend.title = element_blank(),
+        legend.position = "bottom")
+
+```
+
