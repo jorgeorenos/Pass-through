@@ -25,7 +25,7 @@ inflacion <- inflacion %>% mutate("Esquema" = case_when(Periodo < as.Date("2005-
 
 ```{r}
 
-ggplot(data = inflacion, aes(x = Periodo, y = `Porcentual interanual`)) + 
+inf <- ggplot(data = inflacion, aes(x = Periodo, y = `Porcentual interanual`)) + 
   geom_line(aes(color = Esquema), size = 1.5) +
   geom_smooth(method = "loess" ,se = FALSE, color = "black", size = 1) +
   labs(y = "Porcentual", x = "") +
@@ -40,6 +40,7 @@ ggplot(data = inflacion, aes(x = Periodo, y = `Porcentual interanual`)) +
 # En geom_smooth se agrego la linea de tendencia mediante
 # una gregresión local (LOESS).
 
+inf
 
 ```
 
@@ -82,13 +83,77 @@ tc <- read_excel(path = "~/PES/Para la tesis/Tesis/Pass through/Datos/Datos.xlsx
 # Gráfica evolución del tipo ce cambio 1995-2022
 ```{r Gráfica}
 
-ggplot(data = tc, aes(x = Periodo, y = TC)) +
-  geom_line(size = 1.5, color = "#228B22") +
+tipo_c <- ggplot(data = tc, aes(x = Periodo, y = TC)) +
+  geom_line(size = 1.5, color = "#20B2AA") +
   ylim(c(4,9)) +
   labs(y = "Tipo de cambio", x = "") +
   theme_bw(base_size = 16)
 
+tipo_c
+
 ```
 
+#Unir tipo de cambio con inflación
+
+Esto se hará para graficar conjuntamente el tipo de cambio con la inflación 
+
+```{r}
+
+# Uniendo bases de datos
+
+tc_inf <- as.data.frame(cbind(inflacion[c(11:401), c(1,6)], tc[,2]))
+
+```
+
+#Grafica conjunta del tipo de cambio e inflación
+
+```{r tipo de cambio e inflación juntas}
+
+tc_y_inf <- ggplot(data = tc_inf, aes(x = Periodo)) +
+  geom_line(aes(y = `Porcentual interanual`, color = "Inflación"), size = 1.3) +
+  geom_line(aes(y = TC*10, color = "Tipo de cambio"), size = 1.3) +
+  
+  
+  scale_y_continuous(name = "Inflación interanual \n(Porcentaje)",
+                     sec.axis = sec_axis(~./10, name = "Tipo de cambio" )) +
+  
+  scale_color_manual(values = c("#FF5E5E", "#20B2AA")) +
+  
+  
+  theme_bw(base_size = 14) +
+  
+  theme(legend.title = element_blank(),
+        legend.position = "bottom")
+
+tc_y_inf
+  
+```
+
+```{r animación tipo de cambio e inflación}
+
+anim_tc_inf <- ggplot(data = tc_inf, aes(x = Periodo)) +
+  geom_line(aes(y = `Porcentual interanual`, color = "Inflación"), size = 1.3) +
+  #geom_point(aes(y = `Porcentual interanual`), color = "Inflación", size = 1.3) +
+  
+  geom_line(aes(y = TC*10, color = "Tipo de cambio"), size = 1.3) +
+  #geom_point(aes(y = TC*10), color = "Tipo de cambio", size = 1.3) +
+  
+  scale_y_continuous(name = "Inflación interanual \n(Porcentaje)",
+                     sec.axis = sec_axis(~./10, name = "Tipo de cambio" )) +
+  
+  scale_color_manual(values = c("#FF5E5E", "#20B2AA")) +
+  
+  
+  theme_bw(base_size = 16) +
+  
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
+  
+  transition_reveal(Periodo)
+
+animate(anim_tc_inf, fps = 30, duration = 15,
+        width = 1080, height = 720, end_pause = 30)
+
+```
 
 
