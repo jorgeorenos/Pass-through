@@ -86,12 +86,41 @@ tc <- read_excel(path = "~/PES/Para la tesis/Tesis/Pass through/Datos/Datos.xlsx
 tipo_c <- ggplot(data = tc, aes(x = Periodo, y = TC)) +
   geom_line(size = 1.5, color = "#20B2AA") +
   ylim(c(4,9)) +
+  
+  geom_vline(xintercept = as.POSIXct(as.Date("2000-01-01")),
+             linetype = 5) +
+  
+  geom_text(label = "Ley de libre \nnegociación de divisas",
+            x = as.POSIXct(as.Date("2003-01-01")), y = 8.8,
+            size = 6) +
+  
+  geom_vline(xintercept = as.POSIXct(as.Date("2011-01-01")),
+             linetype = 5) +
+  
+  geom_text(label = "Esquema actual de \nPolítica Cambiaria",
+            x = as.POSIXct(as.Date("2013-12-01")), y = 8.8,
+            size = 6) +
+  
   labs(y = "Tipo de cambio", x = "") +
   theme_bw(base_size = 16)
 
 tipo_c
 
 ```
+
+# Volatilidad tipo de cambio
+
+```{r Volatilidad tipo de cambio}
+
+# Media y desviación estándar tipo de cambio 1989-2000
+mean(tc$TC[1:127])
+sd(tc$TC[1:127])
+
+# Media y desviación estándar luego de la ley de libre negociación de divisas
+mean(tc$TC[128:391])
+sd(tc$TC[128:391])
+```
+
 
 #Unir tipo de cambio con inflación
 
@@ -155,5 +184,37 @@ animate(anim_tc_inf, fps = 30, duration = 15,
         width = 1080, height = 720, end_pause = 30)
 
 ```
+# Media y desviación estándar tipo de cambio
+
+
+
+# Análisis de correlación entre inflación y tipo de cambio
+
+```{r}
+
+inicial = seq(1, 361, by = 24)
+final = seq(25, 385, by = 24)
+
+correlaciones <- c()
+
+for (i in c(1:16)) {
+  
+  corr <- cor(tc_inf$`Porcentual interanual`[inicial[i]:final[i]], tc_inf$TC[c(inicial[i]:final[i])])
+  
+  correlaciones[i] <- corr
+  
+}
+
+plot(correlaciones, type = "l")
+
+cor(tc_inf$`Porcentual interanual`[inicial[1]:final[1]], tc_inf$TC[c(inicial[1]:final[1])])
+
+```
+
+
+
+
+
+
 
 
