@@ -1,8 +1,8 @@
 ---
 Title: Estimación de los Umbrales
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
   word_document: default
 ---
 
@@ -82,23 +82,14 @@ row.names(datos_modelo) <- c(1:(dim(datos)[1]-1))
 
 ```
 
-\begin{center}
-Datos a utilizar
-\end{center}
+## Datos a utilizar
 
 ```{r Tabla de datos, echo=FALSE}
 
 # con linebrake dentro del agumento col.names podemos separar 
 # los nombres según lo especifiquemos
 
-kable(head(datos_modelo), digits = 5,
-      col.names = linebreak(c("inflación intermensual\nGuatemala", 
-                    "inflación inercial\nGuatemala", 
-                    "inflación intermensual\nEstados Unidos",
-                    "brecha del producto", 
-                    "Depreciación intermensual\nQuetzales x USD 1"), 
-                    align = "c"), 
-      align = "c", escape = FALSE)
+kable(head(datos_modelo), digits = 5, align = "c")
 
 ```
 
