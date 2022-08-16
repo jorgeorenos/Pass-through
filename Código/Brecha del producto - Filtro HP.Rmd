@@ -1,13 +1,15 @@
 ---
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 # Aplicación del filtro Hodrick-Prescott
 
 Se aplicó el filtro Hodrick-Prescott sobre la serie del IMAE para obtener la brecha del producto (el componente cíclico). Para ello debemos recordar que dada la construcción del filtro es necesario que la serie esté desestacionalizada, por lo que se utilizará el método x11-ARIMA sobre la serie original[^1].
 
 ```{r, Datos y librerias, echo=FALSE, include=FALSE}
+
+rm(list = ls())
 
 library(readxl)
 library(mFilter)
