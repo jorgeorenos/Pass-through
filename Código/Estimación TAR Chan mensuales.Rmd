@@ -65,6 +65,8 @@ datos_modelo <- data.frame(inf_gt_intermensual, inf_eua_intermensual,
 
 detach(datos)
 
+datos_modelo <- datos_modelo*100
+
 # construcción de la infalción inercial (inflación del periodo anterior)
 
 inercial <- c(NA, datos_modelo[c(1:dim(datos)[1]-1),1])
@@ -210,8 +212,8 @@ En este caso $(0.016929\leq\Delta^{12}P_{t-1}<0.05409)$ la dicotómica que es 1 
 ```{r Estimación del modelo TAR}
 
 datos_TAR <- datos_modelo %>% 
-                mutate(dmen = ifelse(inercial < 0.0014, yes = 1, no = 0),
-                       dentre = ifelse(inercial>= 0.0014 & inercial< 0.0083,
+                mutate(dmen = ifelse(inercial < 0.14, yes = 1, no = 0),
+                       dentre = ifelse(inercial>= 0.14 & inercial< 0.83,
                                        yes = 1, no = 0))
 
 # Por la forma en la que están construidas las dicotómicas el escenario base
@@ -256,7 +258,7 @@ ggplot(data.frame(TAR$residuals), aes(x = TAR$residuals)) +
   geom_density(size = 1.75) +
   labs(title = "Histograma de los residuos", y = "Densidad", x = "Residuos",
        caption = "Elaboración propia") +
-  geom_text(aes(y = 80, x = 0.010, 
+  geom_text(aes(y = 1, x = 1, 
                 label = "Jarque-Bera = 8.0461 \np-value =0.01"), 
             size = 4)+
   theme_classic(base_size = 18) 
