@@ -195,7 +195,7 @@ La nueva especificación es:
 
 \[\Delta\%P_t = \beta_0 + \beta_1\Delta\%P_{t-1} + \beta_2e_t  
 + \delta_ae_t*(\Delta\%P_{t-1}<0.016929)+ 
-\delta_be_t*(0.016929\leq\Delta\%P_{t-1}<0.05409)+
+\delta_be_t*(0.016929\leq\Delta\%P_{t-1}\leq0.05409)+
 \beta_3\Delta\%P_{t}^E+ \beta_4y_t^{brecha}\]
 
 En este caso $(0.016929\leq\Delta^{12}P_{t-1}<0.05409)$ la dicotómica que es 1 si nos encontramos en el regimen de infalción media y es 0 si nos encontramos en el régimen de inflación alta, esto con el fin de establecer el regímen de infalción baja acomo el escenario base.
@@ -204,7 +204,7 @@ En este caso $(0.016929\leq\Delta^{12}P_{t-1}<0.05409)$ la dicotómica que es 1 
 
 datos_TAR <- datos_modelo %>% 
                 mutate(dmen = ifelse(inercial < 0.14, yes = 1, no = 0),
-                       dentre = ifelse(inercial>= 0.14 & inercial< 0.83,
+                       dentre = ifelse(inercial>= 0.14 & inercial<= 0.83,
                                        yes = 1, no = 0))
 
 # Por la forma en la que están construidas las dicotómicas el escenario base
@@ -228,11 +228,12 @@ Resultados obtenidos
 
 |Variable                                                   |Coeficiente |Error estándar|
 |-----------------------------------------------------------|------------|--------------|
-|$\Delta\%P_{t-1}$                                          |0.327106*** |0.061335      |
-|$e_t$                                                      |0.117002    |0.117002      |
-|$\delta_ae_t*(\Delta^\%P_{t-1}<0.016929)$                  |-0.261588 . |0.126205      |
-|$\delta_be_t*(0.016929\leq\Delta\%P_{t-1}<0.05409)$        |-0.111955   |0.095536      |
-|$\Delta\%P_{t}^{E}$                                        |0.237567*** |0.065732      |
+|$\Delta\%P_{t-1}$                                          |0.32442***  |2.62x10^{-6}  |
+|$e_t$                                                      |0.10405     |0.211847      |
+|$\delta_ae_t*(\Delta\%P_{t-1}<0.14%)$                      |-0.24938 .  |0.050216      |
+|$\delta_be_t*(0.14%\leq\Delta\%P_{t-1}\leq0.83%)$          |-0.09395    |0.328551      |
+|$\Delta\%P_{t}^{E}$                                        |0.23882***  |0.157320      |
+|$\beta_4y_t^{brecha}$                                      |-0.02448    |0.000343      |
 
 ## Comprobación de los supuestos
 
@@ -250,7 +251,7 @@ ggplot(data.frame(TAR$residuals), aes(x = TAR$residuals)) +
   labs(title = "Histograma de los residuos", y = "Densidad", x = "Residuos",
        caption = "Elaboración propia") +
   geom_text(aes(y = 1, x = 1, 
-                label = "Jarque-Bera = 8.0461 \np-value =0.01"), 
+                label = "Jarque-Bera = 10.264 \np-value =0.01"), 
             size = 4)+
   theme_classic(base_size = 18) 
 ```
@@ -291,10 +292,10 @@ car::vif(TAR)
 inf_alta <- c(0)
 lapso <- 10
 
-# Coeficiente del efecto traspaso en regímen de infalción baja
+# Coeficiente del efecto traspaso en regímen de infalción alta
 
-coef_alta <- 0.05689
-coef_inercial <- 0.31947
+coef_alta <- 0.10405
+coef_inercial <- 0.32442
 choque <- 1
 
 
