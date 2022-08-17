@@ -226,7 +226,7 @@ summary(TAR)
 Resultados obtenidos
 \end{center}
 
-|Variable                                                   |Coeficiente |Error estándar|
+|Variable                                                   |Coeficiente |P-value       |
 |-----------------------------------------------------------|------------|--------------|
 |$\Delta\%P_{t-1}$                                          |0.32442***  |2.62x10^{-6}  |
 |$e_t$                                                      |0.10405     |0.211847      |
@@ -319,9 +319,31 @@ total_inf_alta <- prod(inf_alta[2:lapso]) - 1
 total_inf_alta
 ```
 
+# Análsisi de variazas y covarianzas
+Siguiendo la recomendación de Baqueiro, Díaz de Leon & Torres (2004) se calculan las covarianzas entre tipo de cambio y precios para cada uno de los regímens así como la varianza del tipo de cambio. La razón de ello es para determinar el motivo por el cual el coeficiente asociado al pass-through disminuye.
 
+$\beta_i=\frac{cov_{xy}}{var_x}$
 
+Si la covarianza entre el tipo de cambio y los precios disminuye el coeficiente también lo hará algo que también sucede si aumenta la varianza del tipo de cambio.
 
+```{r separcion umbrales}
+# Se crea el dataframe "datos_beta" con el objetivo de identificar dentro de el
+# las observaciones que perteneces a cada tipo de régimen.
+
+datos_beta = datos_TAR %>% mutate("regimen" = case_when(inf_gt_intermensual < 0.14 ~ "inflación baja",
+                                                        inf_gt_intermensual <= 0.83 ~ "inflación media",
+                                                        inf_gt_intermensual > 0.83 ~ "inflación alta")) 
+```
+
+```{r}
+
+# Calculos de varianza y covarianza
+
+kable(datos_beta %>% group_by(regimen) %>% 
+  summarise("covarianza" = cov(inf_gt_intermensual, deprec),
+            "varinza" = var(deprec)))
+
+```
 
 
 
