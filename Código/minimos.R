@@ -1,4 +1,4 @@
-# ciclo para encontrar los n valores mínimos
+# Función para encontrar los n valores mínimos
 
 minimos <- function(x, n){
   
