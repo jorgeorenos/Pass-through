@@ -156,4 +156,4 @@ IMAE_TC %>% ggplot(aes(x = Período, y = ciclo_suave)) +
 ```
 
 
-[^1]:La serie utilizada es el empalme entre los índices base 2001 y 2013 obtenida de la siguiente página https://www.banguat.gob.gt/es/page/indice-mensual-de-la-actividad-economica-imae-ano-de-referencia-2013. Se utiliza la srie original por que la serie de tendencia-ciclo ya fue tratada de tal forma que fue eliminado de el componente irregular.
+[^1]:La serie utilizada es el empalme entre los índices base 2001 y 2013 obtenida del [Banco de Guatemala](https://www.banguat.gob.gt/es/page/indice-mensual-de-la-actividad-economica-imae-ano-de-referencia-2013). Se utiliza la srie original por que la serie de tendencia-ciclo ya fue tratada de tal forma que fue eliminado de el componente irregular.
