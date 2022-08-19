@@ -51,13 +51,15 @@ inf
 # Considerando el pico de inflación hasta Enero 1991
 
 inflacion %>% group_by(Esquema) %>% 
-  summarise("media inflación" = mean(`Porcentual interanual`))
+  summarise("media inflación" = mean(`Porcentual interanual`),
+            "Varianza" = var(`Porcentual interanual`))
 
 # Sin considerar el pico de inflación 
 # Calculos desde enero 1992
 
 inflacion[c(37:402),] %>% group_by(Esquema) %>% 
-  summarise("media inflación" = mean(`Porcentual interanual`))
+  summarise("media inflación" = mean(`Porcentual interanual`),
+            "Varianza" = var(`Porcentual interanual`))
 
 ```
 
@@ -184,8 +186,15 @@ animate(anim_tc_inf, fps = 30, duration = 15,
         width = 1080, height = 720, end_pause = 30)
 
 ```
-# Media y desviación estándar tipo de cambio
 
+# Gráfico KDE
+
+```{r}
+
+ggplot(data = tc_inf, aes(x = TC, y = `Porcentual interanual`)) +
+  geom_density2d_filled()
+
+```
 
 
 # Análisis de correlación entre inflación y tipo de cambio

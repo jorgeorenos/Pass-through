@@ -377,6 +377,18 @@ kable(datos_beta %>% group_by(regimen) %>%
 
 ```
 
+```{r}
+ggplot(data = datos_beta, aes(x = deprec, y = inf_gt_intermensual)) +
+  geom_density2d_filled(show.legend = FALSE, alpha = 0.5) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  
+  labs(y = "Inflación intermensual", x = "Depreciación del tipo de cambio") +
+  
+  facet_wrap(vars(regimen)) +
+  
+  theme_minimal(base_size = 16)
+```
 
 
 [^1]: Se elimina el 15% de las observaciones extremas superiores e inferiores.
