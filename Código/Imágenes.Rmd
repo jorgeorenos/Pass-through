@@ -210,4 +210,7 @@ group_by(tc, esquema) %>%
 
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

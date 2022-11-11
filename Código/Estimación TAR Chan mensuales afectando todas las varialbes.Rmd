@@ -1,8 +1,13 @@
 ---
 Title: Estimación de los Umbrales
 output:
+<<<<<<< Updated upstream
   pdf_document: default
   html_document: default
+=======
+  html_document: default
+  pdf_document: default
+>>>>>>> Stashed changes
   word_document: default
 ---
 
@@ -25,6 +30,7 @@ datos <- read_excel("D:/Documentos/PES/Para la tesis/Tesis/Pass through/Datos/Da
 
 ```
 
+<<<<<<< Updated upstream
 # Estimación de los umbrales de inflacón para la estimación del efecto *Pass through*
 
 Para la estimación de los umbrales del modelo TAR se seguirá la metodología propuesta por Chang(1993). Para ello se estima el modelo para cada uno de los umbrales posibles[^1] teniendo como regla de decisión para escoger los umbrales verificar cuales son los modelos que minimizan la suma de residuos al cuadrado. Una vez definido el conjunto de umbrales es posible definir los distintos regímenes de inflación que determinarán el efecto *pass through*.
@@ -55,6 +61,48 @@ $\Delta\%P_{t-1}<\tau$ Variable dicotómica que es 1 en régimen de inflación b
 Donde es claro que el uso de la dicotómica separa los regímenes de inflación. 
 
 ```{r modelos, include=FALSE}
+=======
+# Proceso de ajuste del modelo TAR para la estimación del efecto *Pass through*
+
+El presente apartado tiene como finalidad detallar el proceso de ajuste del modelo TAR utilizado para la estimación del efecto pass-through del tipo de cambio para Guatemala por lo que se omite la explicación del modelo en cuestión y se concentra únicamente en el código y proceso de estimación.
+
+El punto de partida para el ajuste del modelo TAR es conocer los umbrales que separan cada uno de los regímenes inflacionarios. Debido al hecho que estos se desconocen el primer paso consiste en la estimación de estos. El procedimiento a seguir será el propuesto por Chan(1993) el cual requiere de 3 pasos a seguir.
+
+1. Se ordenan de menor a mayor las observaciones de la variable que define el estado del sistema y se procede a eliminar el 30% de las observaciones extremas[^1]. Este será el conjunto de umbrales posibles.
+
+2. Se ajusta el modelo TAR teórico por cada uno de los umbrales y se captura de cada modelo la suma de residuos al cuadrado *SSR*.
+
+3. Las *SSR* son función del umbral utilizado para el ajuste del modelo por lo que se grafican *SSR* contra umbrales obteniendo así la función *SSR*. Si uno de los umbrales dentro del conjunto es el verdadero umbral del modelo la *SSR* disminuirá en la meda en la cual se aproxima al umbral. Si hay más de un umbral la función *SSR* tendrá tantos mínimos como umbrales a considerar dentro del modelo.
+
+Luego de estimados los umbrales se procede a ajustar el modelo TAR con los umbrales seleccionados.
+
+# Modelo teórico inicial
+
+El modelo teórico es una descomposición factorial de la inflación de la siguiente forma:
+
+\[\Delta\%P_t = \beta_0 + \beta_1\Delta\%P_{t-1} + \beta_2\Delta\%P_t^{EUA} +
+\beta_3\%Y^{gap} + \beta_4\Delta\%e_t + I_t\delta\Delta\%e_t\]
+
+donde:
+
+$\Delta\%P_t$ Tasa de variación del Índice de Precios al Consumidor de Guatemala
+
+$\beta_0$ Componente autónomo de la inflación
+
+$\Delta\%P_{t-1}$ Componente inercial de la inflación
+
+$\Delta\%e_t$ Tasa de variación del tipo de cambio (tasa de depreciación del tipo de cambio)
+
+$\Delta\%P_{t}^{EUA}$ Tasa de variación del Índice de Precios al Consumidor de Estados Unidos
+
+$Y_t^{brecha}$ Brecha relativa del producto respecto del potencial
+
+$I_t$ Variable dummy que es 1 si $\Delta\%P_{t-1}<\tau$ donde $\tau$ es el umbral y 0 en otro caso
+
+El modelo considera a la infalción inercial ($\Delta\%P_{t-1}$) como la variable que define el estado del sistema, además de ello el uso de la variable dummy orgina dos tipos de regímenes uno de inflación 'baja' y otro de inflación 'alta'.
+
+```{r Datos a utilizar, include=FALSE, echo = FALSE}
+>>>>>>> Stashed changes
 
 # Construcción de data frame a utilizar
 
@@ -65,6 +113,11 @@ datos_modelo <- data.frame(inf_gt_intermensual, inf_eua_intermensual,
 
 detach(datos)
 
+<<<<<<< Updated upstream
+=======
+datos_modelo <- datos_modelo*100
+
+>>>>>>> Stashed changes
 # construcción de la infalción inercial (inflación del periodo anterior)
 
 inercial <- c(NA, datos_modelo[c(1:dim(datos)[1]-1),1])
@@ -80,6 +133,7 @@ row.names(datos_modelo) <- c(1:(dim(datos)[1]-1))
 
 ```
 
+<<<<<<< Updated upstream
 \begin{center}
 Datos a utilizar
 \end{center}
@@ -103,6 +157,33 @@ kable(head(datos_modelo), digits = 5,
 ## Estimación de los distintos modelos
 
 Como se especificó la varialbe dicotómica $\Delta^{12}P_{t-1}<\tau$ será 1 si el régimen de inflación es bajo o 0 si el régimen de inflación es alto, esto se replica para cad uno de los mosdelos a estimar.
+=======
+## Datos utilizados para ajsutar el modelo
+
+Todos los datos se obtuvieron de fuentes oficiales como el [Banco de guatemala](https://www.banguat.gob.gt/) y [U.S. Bureu of Labor Statics](https://www.bls.gov/). Además se adjunta la [base de datos](https://github.com/jorgeorenos/Pass-through/blob/cambios/Datos%20utilizados%20para%20el%20modelo.csv) utilizada para ajustar el modelo[^2].
+
+```{r Tabla de datos, echo=FALSE}
+
+tabla <- datos_modelo
+
+tabla <- cbind.data.frame(datos[(2:257),1], datos_modelo)
+
+kable(head(tabla), digits = 5, align = "c", 
+      col.names = c("Período", "Inflación intermensual de \nGuatemala",
+                    "Componente inercial",
+                    "Inflación intermensual de \nEstados Unidos",
+                    "Brecha del producto", "Depreciación del tipo de cambio"),
+      caption = "Conjunto de datos utilizados") %>%
+  kable_classic()
+
+rm(tabla)
+
+```
+
+# Estimación de los umbrales de inflación
+
+A continuación, se presenta el código con el cual se creó el conjunto de umbrales posibles así como el ajuste del modelo TAR especificado anteriormente por cada umbral posible. El número total de modelos estimados fue de 180.
+>>>>>>> Stashed changes
 
 ```{r estimación de modelos}
 # Creación de todos los posibles umbrales
@@ -111,18 +192,29 @@ Como se especificó la varialbe dicotómica $\Delta^{12}P_{t-1}<\tau$ será 1 si
 umbrales_fuera <- length(inercial) - round(dim(datos)[1] - dim(datos)[1]*0.3, digits = 0)
 
 # posibles umbrales del modelo
+<<<<<<< Updated upstream
+=======
+# inercial es un vector que contiene el rezago de la inflación, variable que define el estado del sistema
+>>>>>>> Stashed changes
 
 posibles <- sort(inercial)
 posibles <- posibles[round((umbrales_fuera/2 + 1), 0):
                        (length(inercial)-round(umbrales_fuera/2,0))] 
 
+<<<<<<< Updated upstream
 
 # Lista de modelos
+=======
+# Finalmente posibles es el vector que contiene el conjunto de umbrales posibles utilizados para estimar el modelo
+
+# Estimación de los 180 modelos
+>>>>>>> Stashed changes
 
 nombre_modelos <- c()
 modelos <- list()
 bases <- list()
 
+<<<<<<< Updated upstream
 # Estimación de los modelos por cada umbral
 
 for (i in c(1:length(posibles))) {
@@ -132,6 +224,26 @@ for (i in c(1:length(posibles))) {
   m <- mutate(datos_modelo, 
                      d = ifelse(inercial<posibles[i], yes = 0, no = 1))
   
+=======
+# Ciclo para estimar y nombrar los modelos
+
+for (i in c(1:length(posibles))) {
+  
+  # Se genera un nombre para cada modelo a fin de poder tener una correcta identificación
+  
+  nombre_modelos[i] <- c(sprintf("modelo_%s_%s", i, posibles[i]))
+  
+  # Se genera una base de datos para cada modelo
+  # en esta base de datos d es la variable dummy que separa los regímenes inflacionarios
+  
+  m <- mutate(datos_modelo, 
+                     d = ifelse(inercial<posibles[i], yes = 0, no = 1))
+  
+  # Bases es la lista que almacena las bases de datos utilizadas
+  # Aunque era posible estimar los modelos sin almacenar las bases de datos se almacenaron
+  # para tener una ferencia de ellas
+  
+>>>>>>> Stashed changes
   bases[[i]] <- m
   
   modelo <- lm(bases[[i]],
@@ -143,6 +255,7 @@ for (i in c(1:length(posibles))) {
   
 }
 
+<<<<<<< Updated upstream
 names(modelos) <- nombre_modelos
 ```
 
@@ -150,6 +263,20 @@ Luego de la estimación de los modelos se procede al cálculo de la suma de resi
 
 ```{r calculo SSR}
 
+=======
+# Se coloca el nombre a cada base de datos y modelo
+
+names(modelos) <- nombre_modelos
+names(bases) <- nombre_modelos
+```
+
+Luego de la estimación de los modelos se procede al cálculo de la *SSR* de cada modelo.
+
+```{r calculo SSR}
+
+# SSR es el vector que contiene la suma de residuos al cuadrado de cada modelo
+
+>>>>>>> Stashed changes
 ssr <- c()
 
 for (i in c(1:length(posibles))) {
@@ -159,6 +286,7 @@ for (i in c(1:length(posibles))) {
 }
 ```
 
+<<<<<<< Updated upstream
 ## Identificación de los umbrales
 
 Una vez determinada la ssr se procede a la identificacióno de los umbrales escogiendo aquellos que minimicen la ssr.
@@ -170,15 +298,35 @@ source("D:/Documentos/PES/Para la tesis/Tesis/Pass through/Código/minimos.R")
 
 # Una vez se tiene la ufnción se procede a deterinar cuales son los umbrales
 # del modelo
+=======
+### Identificación de los umbrales a partir de la función SSR
+
+Una vez determinada la ssr se procede a la identificación de los umbrales escogiendo aquellos que minimicen la ssr en cada modelo. Dado que R no cuenta con una función nativa para la identificación de más de un mínimo se programó una función llamada _minimos_ y que se deja [aquí](https://github.com/jorgeorenos/Pass-through/blob/cambios/C%C3%B3digo/minimos.R) en dado caso el lector quiera revisarla.
+
+```{r identificación tau 1}
+
+# Cargando la función mínimos
+
+source("minimos.R")
+
+# Una vez se tiene la función se procede a deterinar cuales son los umbrales del modelo
+>>>>>>> Stashed changes
 
 umbrales <- posibles[ssr %in% minimos(ssr, 4)]
 
 names(modelos[ssr %in% minimos(ssr, 4)])
 
+<<<<<<< Updated upstream
 # Como se observa son los modelos 11 y 12 con inflación de 0.01692999 anual
 # los modelo con menor ssr y por lo tanto este es el primer umbral.
 
 # Forma grafica de identificacion del umbral
+=======
+# Como se observa los umbrales de inflación que minizan los errores son
+# 0.14, 0.44, 0.56 y 0.83% de infalción intermensual.
+
+# De forma gráfica se tiene la función SSR y la identificación de los mínimos
+>>>>>>> Stashed changes
 
 ggplot() + 
   geom_line(aes(y = ssr, x = posibles), colour = "#3F6E9A", size = 1.3) +
@@ -196,6 +344,7 @@ ggplot() +
 
 # Estiamción del modelo con dos umbrales, tres regímenes
 
+<<<<<<< Updated upstream
 Una vez determinado el conjunto de umbrales se procede a la estimación del modelo TAR con tres regímenes inflacionarios.
 
 La nueva especificación es:
@@ -217,6 +366,38 @@ datos_TAR <- datos_modelo %>%
 # Por la forma en la que están construidas las dicotómicas el escenario base
 # Es el escenario de infalción baja
 
+=======
+Despues de distintas pruebas el modelo que mejores resultados presentó fue el que considera como los umbrales inflacionarios a $\tau_1=0.14\%$ y $\tau_2=0.83\%$ de inflación intermensual, algo que da origen a tres regímenes inflacionarios los cuales fueron:
+
+* Inflación baja ($\Delta\%P_{t-1} < 0.14\%$)
+* Inflación media ($0.14\% \leq \Delta\%P_{t-1} \leq 0.83\%$)
+* Inflación alta ($\Delta\%P_{t-1} > 0.14\%$)
+
+y el modelo quedó especificado la siguiente forma:
+
+\[\Delta\%P_t = \beta_0 + \beta_1\Delta\%P_{t-1} + \beta_2\Delta\%P_t^{EUA} +
+\beta_3\%Y^gap + \beta_4\Delta\%e_t + I_t^1\delta_1\Delta\%e_t + I_t^2\delta_2\Delta\%e_t\]
+
+Donde:
+
+$I_t^1$ Variable dummy que es 1 en el régimen de inflación baja
+
+$I_t^2$ Variable dummy que es 1 en el régimen de inflación media
+
+Dejando como escenario base del ajuste del modelo TAR al régimen de inflación alta.
+
+El código para el ajuste del modelo es el siguiente:
+
+```{r Estimación del modelo TAR}
+
+# Datos_TAR es la base de datos con la que se estimó el modelo especificado anteriormente
+
+datos_TAR <- datos_modelo %>% 
+                mutate(dmen = ifelse(inercial < 0.14, yes = 1, no = 0),
+                       dentre = ifelse(inercial>= 0.14 & inercial<= 0.83,
+                                       yes = 1, no = 0))
+
+>>>>>>> Stashed changes
 attach(datos_TAR)
 
 TAR <- lm(datos_TAR, formula = inf_gt_intermensual ~ 1 +
@@ -224,6 +405,7 @@ TAR <- lm(datos_TAR, formula = inf_gt_intermensual ~ 1 +
             inercial + inf_eua_intermensual + var_brecha - dmen - dentre)
 
 detach(datos_TAR)
+<<<<<<< Updated upstream
 
 summary(TAR)
 
@@ -245,6 +427,72 @@ Resultados obtenidos
 
 ### Normalidad
 ```{r Jarque Bera}
+=======
+```
+
+Con los que se obtuvieron los siguientes resultados:
+
+```{r, echo = FALSE}
+
+nombre_coefs <- c("$\\beta_0$", "$\\beta_4$ inflación alta", "$\\beta_1$", "$\\beta_2$",
+                  "$\\beta_3$", "$\\delta_1$ inflación baja", "$\\delta_2$ inflación media")
+
+d <- coef(summary(TAR))
+
+rownames(d) <- nombre_coefs
+
+kable(d, caption = "Coeficientes") %>% kable_classic()
+
+rm(nombre_coefs, d)
+
+```
+
+# Estimación del efecto pass-through
+
+finalmente la estimación del efecto está dada por las interacciones que propician las variables dummy.
+
+Régimen inflacionario                                      |Interacción       |Pass-through
+-----------------------------------------------------------|------------------|------------
+Inflación alta ($\Delta\%P_{t-1} > 0.14\%$)                |$\beta_4$         |0.10405
+Inflación media ($0.14\% \leq \Delta\%P_{t-1} \leq 0.83\%$)|$\beta_4+\delta_2$|0.0101
+Inflación baja ($\Delta\%P_{t-1} < 0.14\%$)                |$\beta_4+\delta_1$|-0.14533
+
+> En términos gráficos el efecto pass-through queda definido de esta forma
+
+```{r separcion umbrales, echo = FALSE}
+# Se crea el dataframe "datos_beta" con el objetivo de identificar dentro de el
+# las observaciones que perteneces a cada tipo de régimen.
+
+datos_beta = datos_TAR %>% mutate("regimen" = case_when(inf_gt_intermensual < 0.14 ~ "inflación baja",
+                                                        inf_gt_intermensual <= 0.83 ~ "inflación media",
+                                                        inf_gt_intermensual > 0.83 ~ "inflación alta")) 
+```
+
+```{r, echo = FALSE, message= FALSE}
+
+ggplot(data = datos_beta, aes(x = deprec, y = inf_gt_intermensual)) +
+  geom_density2d_filled(show.legend = FALSE, alpha = 0.5) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  
+  labs(y = "Inflación intermensual", x = "Depreciación del tipo de cambio") +
+  
+  facet_wrap(vars(regimen)) +
+  
+  theme_minimal(base_size = 16)
+
+```
+
+
+## Comprobación de los supuestos
+
+En este apartado se hace una comprobación de los supuestos de MCO para el modelo ajustado.
+
+### Normalidad
+Las pruebas de Jarque Bera y Shapiro muestran normalidad de los residuos al 1%.
+
+```{r Jarque Bera, comment= "", message = FALSE}
+>>>>>>> Stashed changes
 tseries::jarque.bera.test(TAR$residuals)
 shapiro.test(TAR$residuals)
 ```
@@ -256,13 +504,22 @@ ggplot(data.frame(TAR$residuals), aes(x = TAR$residuals)) +
   geom_density(size = 1.75) +
   labs(title = "Histograma de los residuos", y = "Densidad", x = "Residuos",
        caption = "Elaboración propia") +
+<<<<<<< Updated upstream
   geom_text(aes(y = 80, x = 0.010, 
                 label = "Jarque-Bera = 8.0461 \np-value =0.01"), 
+=======
+  geom_text(aes(y = 1, x = 1, 
+                label = "Jarque-Bera = 10.264 \np-value =0.01"), 
+>>>>>>> Stashed changes
             size = 4)+
   theme_classic(base_size = 18) 
 ```
 
+<<<<<<< Updated upstream
 ```{r Gráfico cuantil-cuantil}
+=======
+```{r Gráfico cuantil-cuantil, echo = FALSE}
+>>>>>>> Stashed changes
 
 ggplot(data.frame(TAR$residuals), aes(sample = TAR$residuals)) +
   stat_qq(distribution = qnorm) + stat_qq_line() +
@@ -274,23 +531,44 @@ ggplot(data.frame(TAR$residuals), aes(sample = TAR$residuals)) +
 
 
 ### Autocorrelación
+<<<<<<< Updated upstream
 ```{r autocorrelacion}
+=======
+
+La pruba de Breusch-Godfrey muestra que no hay autocorrelación de los errores.
+
+```{r autocorrelacion, comment= ""}
+>>>>>>> Stashed changes
 lmtest::bgtest(TAR)
 ```
 
 ### Heterocedasticidad
+<<<<<<< Updated upstream
 ```{r Heterocedasticidad}
+=======
+
+La prueba Breusch-Pagan de heterocedasticidad muestran una varianza homocedastica.
+
+```{r Heterocedasticidad, comment= ""}
+>>>>>>> Stashed changes
 lmtest::bptest(TAR)
 ```
 
 ### Multicolinealidad
 
+<<<<<<< Updated upstream
 ```{r VIF}
+=======
+Todos los factores de inflación de la varianza son inferiores a 5 por lo que el modelo no sufre de problemas de multicolinealidad.
+
+```{r VIF, comment= ""}
+>>>>>>> Stashed changes
 
 car::vif(TAR)
 
 ```
 
+<<<<<<< Updated upstream
 # Simulaciones de choques cambiarios
 
 ```{r Periodo de inflación baja}
@@ -332,3 +610,26 @@ total_inf_alta
 
 
 [^1]: Chang(1993) recomienda usar el 70% de las observaciones cenetrales
+=======
+# Análsisi de variazas y covarianzas
+Siguiendo la recomendación de Baqueiro, Díaz de Leon & Torres (2004) se calculan las covarianzas entre tipo de cambio y precios para cada uno de los regímens así como la varianza del tipo de cambio. La razón de ello es para determinar el motivo por el cual el coeficiente asociado al pass-through disminuye.
+
+\[\beta_i = \frac{cov_{x_iy}}{var_{x_i}}\]
+
+Si la covarianza entre el tipo de cambio y los precios disminuye el coeficiente también lo hará algo que también sucede si aumenta la varianza del tipo de cambio.
+
+```{r covarianzas y varianzas, echo= FALSE}
+
+# Calculos de varianza y covarianza
+
+kable(datos_beta %>% group_by(regimen) %>% 
+  summarise("covarianza" = cov(inf_gt_intermensual, deprec),
+            "varinza" = var(deprec))) %>% kable_classic()
+
+```
+
+La tabla muestra que sin lugar a duda que la caída del pass-through es ocasionado por un debilitamiento de la relación del tipo de cambio con los precios, a pesar de la caída en la varianza del tipo de cambio.
+
+[^1]: Se elimina el 15% de las observaciones extremas superiores e inferiores.
+[^2]: Para estimar la brecha del producto se utilizó el Indice Mensual de la Actividad Económica (IMAE), serie que fue desestacionalizada para posteriormente aplicarse el filtro Hodrick-Prescott. el trataiento de la serie lo puede econtrar en este aquí: [serie IMAE](https://jorgeorenos.github.io/serie-IMAE/)
+>>>>>>> Stashed changes
