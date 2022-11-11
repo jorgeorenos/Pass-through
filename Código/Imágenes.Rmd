@@ -33,6 +33,181 @@ ggplot(data = inflacion, aes(x = Periodo, y = `Porcentual interanual`)) +
   
   theme(legend.title = element_blank(),
         legend.position = "bottom")
+<<<<<<< Updated upstream
 
 ```
 
+=======
+  
+# En geom_smooth se agrego la linea de tendencia mediante
+# una gregresión local (LOESS).
+
+inf
+
+```
+
+# Inflación Media según esquema de política
+
+```{r Media de inflación}
+
+# Considerando el pico de inflación hasta Enero 1991
+
+inflacion %>% group_by(Esquema) %>% 
+  summarise("media inflación" = mean(`Porcentual interanual`),
+            "Varianza" = var(`Porcentual interanual`))
+
+# Sin considerar el pico de inflación 
+# Calculos desde enero 1992
+
+inflacion[c(37:402),] %>% group_by(Esquema) %>% 
+  summarise("media inflación" = mean(`Porcentual interanual`),
+            "Varianza" = var(`Porcentual interanual`))
+
+```
+
+
+# Prueba Dickey-Fuller para el periodo EMEI
+
+```{r}
+
+# Prueba para el periodo EMEI
+tseries::adf.test(inflacion$`Porcentual interanual`[c(193:402)])
+
+```
+
+# Gráfica del tipo de cambio
+## Datos del tipo de cambio
+
+```{r Datos tipo de cambio}
+
+tc <- read_excel(path = "~/PES/Para la tesis/Tesis/Pass through/Datos/Datos.xlsx", 
+                        sheet = "TC 1989-2022")
+```
+
+# Gráfica evolución del tipo ce cambio 1995-2022
+```{r Gráfica}
+
+tipo_c <- ggplot(data = tc, aes(x = Periodo, y = TC)) +
+  geom_line(size = 1.5, color = "#20B2AA") +
+  ylim(c(4,9)) +
+  
+  geom_vline(xintercept = as.POSIXct(as.Date("2000-01-01")),
+             linetype = 5) +
+  
+  geom_text(label = "Ley de libre \nnegociación de divisas",
+            x = as.POSIXct(as.Date("2003-01-01")), y = 8.8,
+            size = 6) +
+  
+  geom_vline(xintercept = as.POSIXct(as.Date("2011-01-01")),
+             linetype = 5) +
+  
+  geom_text(label = "Esquema actual de \nPolítica Cambiaria",
+            x = as.POSIXct(as.Date("2013-12-01")), y = 8.8,
+            size = 6) +
+  
+  labs(y = "Tipo de cambio", x = "") +
+  theme_bw(base_size = 16)
+
+tipo_c
+
+```
+
+# Volatilidad tipo de cambio
+
+```{r Volatilidad tipo de cambio}
+
+# Media y desviación estándar tipo de cambio 1989-2000
+mean(tc$TC[1:127])
+sd(tc$TC[1:127])
+
+# Media y desviación estándar luego de la ley de libre negociación de divisas
+mean(tc$TC[128:391])
+sd(tc$TC[128:391])
+```
+
+
+#Unir tipo de cambio con inflación
+
+Esto se hará para graficar conjuntamente el tipo de cambio con la inflación 
+
+```{r}
+
+# Uniendo bases de datos
+
+tc_inf <- as.data.frame(cbind(inflacion[c(11:401), c(1,6)], tc[,2]))
+
+```
+
+#Grafica conjunta del tipo de cambio e inflación
+
+```{r tipo de cambio e inflación juntas}
+
+tc_y_inf <- ggplot(data = tc_inf, aes(x = Periodo)) +
+  geom_line(aes(y = `Porcentual interanual`, color = "Inflación"), size = 1.3) +
+  geom_line(aes(y = TC*10, color = "Tipo de cambio"), size = 1.3) +
+  
+  
+  scale_y_continuous(name = "Inflación interanual \n(Porcentaje)",
+                     sec.axis = sec_axis(~./10, name = "Tipo de cambio" )) +
+  
+  scale_color_manual(values = c("#FF5E5E", "#20B2AA")) +
+  
+  
+  theme_bw(base_size = 14) +
+  
+  theme(legend.title = element_blank(),
+        legend.position = "bottom")
+
+tc_y_inf
+  
+```
+
+```{r animación tipo de cambio e inflación}
+
+anim_tc_inf <- ggplot(data = tc_inf, aes(x = Periodo)) +
+  geom_line(aes(y = `Porcentual interanual`, color = "Inflación"), size = 1.3) +
+  #geom_point(aes(y = `Porcentual interanual`), color = "Inflación", size = 1.3) +
+  
+  geom_line(aes(y = TC*10, color = "Tipo de cambio"), size = 1.3) +
+  #geom_point(aes(y = TC*10), color = "Tipo de cambio", size = 1.3) +
+  
+  scale_y_continuous(name = "Inflación interanual \n(Porcentaje)",
+                     sec.axis = sec_axis(~./10, name = "Tipo de cambio" )) +
+  
+  scale_color_manual(values = c("#FF5E5E", "#20B2AA")) +
+  
+  
+  theme_bw(base_size = 25) +
+  
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
+  
+  transition_reveal(Periodo)
+
+animate(anim_tc_inf, fps = 30, duration = 15,
+        width = 1080, height = 720, end_pause = 30)
+
+```
+
+# Tipo de cambio medio y varianza
+
+Se separó la media y varianza del tipo de cambio dependiendo de si fue antes de la implementación de la ley de libre negociación de divisas, luego de la implementación y el último esquema de política cambiaria.
+
+```{r}
+
+tc <- tc %>% mutate(esquema = case_when(Periodo < as.Date("2000-05-01") ~ "luego de la liberación", 
+                                        Periodo >= as.Date("2000-05-01") & Periodo < as.Date("2011-01-01") ~             
+                                                                                      "implementación ley",
+                                        Periodo >= as.Date("2011-01-01") ~ "actual politica cambiaria"))
+
+group_by(tc, esquema) %>% 
+  summarise(media = mean(TC), "varianza" = var(TC))
+
+```
+
+
+
+
+
+
+>>>>>>> Stashed changes

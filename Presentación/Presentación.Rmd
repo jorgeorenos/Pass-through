@@ -1,0 +1,204 @@
+---
+title: "Efecto traspaso del tipo de cambio a precios, una estimación para Gutemala"
+author: "Jorge Orenos"
+date: "Agosto 2022"
+lang: es-MX
+output:
+  powerpoint_presentation: default
+  slidy_presentation: default
+  ioslides_presentation:
+    transition: slower
+---
+
+## Pregunta de investigación {.bigger}
+
+¿El efecto traspaso (pass-through) disminuye junto con la inflación?
+
+__Objetivos__
+
+- Comprobar la relación directa entre efecto traspaso e inflación.
+- Verificar si la disminución del pass-through se debe al debilitamiento de la relación tipo de cambio y los precios.
+
+## Introducción
+
+- En los últimos 30 años en Guatemala se ha hecho política monetaria bajo dos esquemas: Agregados Monetarios y el de Metas Explicitas de Inflación (EMEI).
+
+- Durante este periodo el Banco de Guatemala ha tenido éxito en controlar la inflación y anclar las expectativas de los agentes, especialmente en el EMEI.
+
+- Las series del tipo de cambio e inflación parecen exhibir un comportamiento indpendiente, pero se hace necesario comprobarlo y estimar el efecto del tipo de cambio sobre los precios en un periodo que incluya el EMEI.
+
+## Comportamiento de la inflación en los últimos 30 años
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Trabajo de graduación/Imagenes/Figura 2 Esquemas de política monetaria.svg){width=80%}
+</center>
+
+## Media y varianza de la inflación {.bigger}
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/Inflación media y su varianza.png){width=80%}
+</center>
+
+Siendo evidente el éxito en el control de la inflación por parte del Banco Central.
+
+## Comportamiento del tipo de cambio
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Trabajo de graduación/Imagenes/Figura 3 Evolución tipo de cambio.svg){width=70%}
+</center>
+
+Donde la reducción de la volatilidad es la característica más notoria
+
+- Varianza antes de la emisión de la ley de libre negociación de divisas 0.8364
+- Varianza después de la emisión de la ley de libre negociación de divisas 0.0448
+- Varianza luego de la resolución JM 171-2011 0.023
+
+## Comportamiento conjunto entre tipo de cambio e inflación
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Trabajo de graduación/Imagenes/Tipo de cambio e inflación.gif){width=70%}
+</center>
+
+## Revisión literaria
+
+Efecto pass-through
+
+- Definición del efecto pass-through (Goldberg, 1996).
+- Reducción del pass-through ante el contexto inflacionario (John Taylor, 2000).
+- Modelo autorregresivo por umbrales.
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/TAR básico.png){width=70%}
+</center>
+
+- Estudios México (Baqueiro, Díaz de León, & Torres, 2004), Argentina (Brufman, Trajtenberg, & Donaldson, 2016) y Guatemala (Eddy Carpio, 2008 y Banco de Guatemala, 2005).
+
+## Metodología
+
+__La especificación inicial del modelo fue:__
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/TAR general pass-through.png){width=70%}
+</center>
+
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/Variables TAR.png){width=45%}
+
+La variable que define el estado del sistema es el componente inercial de la inflación
+
+## {.bigger}
+
+El modelo anterior se puede especificar en términos de una interacción con una variable dummy
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/TAR general con dummy.png){width=70%}
+</center>
+
+Donde
+
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/Primera dummy.png){width=70%}
+
+Las especificaciones anteriores cuentan con dos regímenes inflacionarios:
+
+si $\Delta\%P_{t-1}<\tau$ régimen de inflación baja
+
+si $\Delta\%P_{t-1}\geq\tau$ régimen de inflación alta
+
+## Datos utilizados
+
+Todas las variables están en frecuencia mensual y abarcan el periodo enero 2001 - mayo 2022.
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/Datos utilizados.png){width=100%}
+</center>
+
+## Construcción de las variables {.bigger}
+
+- _Inflación intermensual de Guatemala_ $\Delta\%P_t = (\frac{P_t}{P_{t-1}}-1)*100$
+- _Depreciación mensual del tipo de cambio_ $\Delta\%e_t = (\frac{e_t}{e_{t-1}}-1)*100$
+- _Inflación intermensual de Estados Unidos_ $\Delta\%P_t^{EUA} = (\frac{P_t^{EUA}}{P_{t-1}^{EUA}}-1)*100$
+- _Brecha del producto_ $\%Y_t^{gap}=(\frac{IMAE_t-IMAE_t^{potencial}}{IMAE_t^{potencial}})*100$
+
+## Estimación de los umbrales de infalción
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/Umbrales de inflación.svg){width=50%}
+</center>
+
+El procedimiento propuesto por Chan(1993) sugiera la estimación del modelo tantas veces como posibles umbrales se tengan disponibles. Los umbrales sugeridos por este proceso fueron:
+
+1. Inflación intermensual de 0.14%
+2. Inflación intermensual de 0.44%
+3. Inflación intermensual de 0.56%
+4. Inflación intermensual de 0.83%
+
+## Una idea más intuitiva de los umbrales
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Trabajo de graduación/Imagenes/intermensual a interanual.svg){width=90%}
+</center>
+
+## Especificación del modelo
+
+Luego de distintas pruebas el modelo que mejores resultados mostró fue el que consideraba como umbrales de inflación a __0.14%__ y __0.83%__ de inflación intermensual. Con ello se especificaron tres regímenes inflacionarios, los cuales fueron:
+
+* inflación baja ($\Delta\%P_{t-1} < 0.14\%$)
+* inflación media ($0.14\% \leq\Delta\%P_{t-1}\leq 0.83\%$)
+* inflación alta ($\Delta\%P_{t-1} > 0.83\%$)
+
+Finalmente, el modelo quedó especificado de la siguiente manera:
+
+<center>
+$\Delta\%P_t = \beta_0 + \beta_1\Delta\%P_{t-1} + \beta_2\Delta\%P_t^{EUA} + \beta_3\%Y^gap + \beta_4\Delta\%e_t + I_t^1\delta_1\Delta\%e_t + I_t^2\delta_2\Delta\%e_t$
+</center>
+
+Donde:
+
+$I_t^1$ Variable dummy que es 1 en el régimen de inflación baja
+
+$I_t^2$ Variable dummy que es 1 en el régimen de inflación media
+
+Dejando como escenario base del ajuste del modelo TAR al régimen de inflación alta.
+
+## Estiamción del modelo
+
+Los resultados del moodelo son:
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/coeficientes.png){width=80%}
+</center>
+
+## Estimación del pass-through
+
+Debido al uso de variables dummy el efecto pass-through queda definido de la siguiente manera:
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/Efecto neto.png){width=80%}
+</center>
+
+## Una posible explicación
+
+Debido a que los coeficientes del modelo se estiman por MCO se tiene la siguiente igualdad:
+
+\[\beta_i = \frac{cov_{x_iy}}{var_{x_i}}\]
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Imagenes presentación/Covarianza y vanriaza.png){width=80%}
+</center>
+
+## Conclusiones
+
+1. Se encontró evidencia a favor de la hipótesis de que el estado inflacionario de la economía tiene una incidencia sobre el efecto pass-through.
+
+2. El debilitamiento de la relación entre tipo de cambio de inflación es el principal causante en la caída del efecto pass-through.
+
+3. El modelo autorregresivo por umbrales es un primer acercamiento a este tipo de asimetría, pero su análisis puede ampliarse por medio de un modelo de transición suave.
+
+## {.bigger}
+<center>
+<H1>
+¡Muchas Gracias!
+</H1>
+</center>
+
+<center>
+![](D:/Documentos/PES/Para la tesis/Tesis/Pass through/Presentación/Escudos.png){width=50%}
+</center>
+
+
