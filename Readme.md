@@ -11,5 +11,9 @@ Dentro de las premisas que se consideraron fue que la inflación en Guatemala ha
 |-------------------------|-----------------------------|
 |![Evolución inflación](https://github.com/jorgeorenos/Pass-through-R/blob/master/Im%C3%A1genes/Evoluci%C3%B3n%20inflaci%C3%B3n.svg)| ![Evolución del tipo de cambio](https://github.com/jorgeorenos/Pass-through-R/blob/master/Im%C3%A1genes/Evoluci%C3%B3n%20del%20tipo%20de%20cambio.svg) |
 
+´´´ R
+  x <- 5
+´´´
+
 [^1]: Los bienes trasables son aquellos que pueden ser comercializados en el mercado doméstico como externo.
 [^2]: 4% mas menos 1%
