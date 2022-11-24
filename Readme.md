@@ -7,7 +7,7 @@ Este tipo de relación recibe el nombre de Efecto Traspaso del tipo de cambio a 
 
 Dentro de las premisas que se consideraron fue que la inflación en Guatemala ha presentado una tendencia clara hacia la baja y a mantenerse dentro de la meta de inflación fijada por el Banco Central[^2], y como segugundo punto que el tipo de cambio se ha manetido estable a partir de la entrada en vigencia de la ley de libre negociación de divisas en el año 2000.
 
-![Evolución inflación](https://github.com/jorgeorenos/Pass-through-R/blob/master/Im%C3%A1genes/Evoluci%C3%B3n%20de%20la%20inflaci%C3%B3n.svg)
+![Evolución inflación](https://github.com/jorgeorenos/Pass-through-R/blob/master/Im%C3%A1genes/Evoluci%C3%B3n%20inflaci%C3%B3n.svg)
 
 [^1]: Los bienes trasables son aquellos que pueden ser comercializados en el mercado doméstico como externo.
 [^2]: 4% mas menos 1%
