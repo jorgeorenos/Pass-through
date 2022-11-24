@@ -36,15 +36,15 @@ $cilo^{gt}_t \text{ Es el ciclo económico en el periodo t}$
 
 Los umbrales de inflación que definen estado del sistema se obtuvieron siguiendo la metodología expuesta por Chang(1993) y la estimación del modelo dio lo siguientes reseultados:
 
-<center>
-    
-Régimen inflacionario                                      |Interacción       |Pass-through
------------------------------------------------------------|------------------|------------
-Inflación alta ($\Delta\%P_{t-1} > 0.14\%$)                |$\delta$          | 0.10405
-Inflación media ($0.14\% \leq \Delta\%P_{t-1} \leq 0.83\%$)|$\beta$           | 0.0101
-Inflación baja ($\Delta\%P_{t-1} < 0.14\%$)                |$\gamma+\delta_1$ |-0.14533
+Régimen inflacionario                                      |coeficiente       |Efecto traspaso
+-----------------------------------------------------------|------------------|---------------
+Inflación alta ($\Delta\%P_{t-1} > 0.14\%$)                |$\delta$          | 0.10405%
+Inflación media ($0.14\% \leq \Delta\%P_{t-1} \leq 0.83\%$)|$\beta$           | 0.0101%
+Inflación baja ($\Delta\%P_{t-1} < 0.14\%$)                |$\gamma+\delta_1$ |-0.14533%
                                            
-</center>
+El modelo muetra como a partir de que el componente inercial de la inflación cruza de umbral de inflación alta a media el efecto traspaso disminuye y lo hace aún más en el entorno inflacionario bajo.
+
+Para un mayor detalle de la estimación puede consultar el [archivo Rmd](https://github.com/jorgeorenos/Pass-through-R/blob/master/C%C3%B3digo/Estimaci%C3%B3n%20TAR%20Chan%20mensuales.Rmd) de este repositorio que lo contiene.
 
 [^1]: Los bienes trasables son aquellos que pueden ser comercializados en el mercado doméstico como externo.
 [^2]: 4% mas menos 1%
