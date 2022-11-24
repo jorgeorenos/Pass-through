@@ -13,10 +13,10 @@ Dentro de las premisas que se consideraron fue que la inflación en Guatemala ha
 
 En virtud de lo anterior se construyó un modelo autoregresivo por umbrales (TAR  por sus siglas en inglés) el cual tiene la particularidad de no ser lineal debido a que sus parámetros varían en función del estado de una variable del sistema. Para los fines que se persigue la variable que define el cambio en los parámetros del modelo fue la inflación doméstica con lo que la especificación del modelo queda de la siguiente manera:
 
-$inf^{gt}_t =  \begin{cases}
-    \alpha_0 + \gamma deprec^{gt}_t  + \alpha_1 inf^{gt}_{t-1} + \alpha_2 inf^{eua}_t + \alpha_3 ciclo^{gt}_t & si & inf^{gt}_{t-1} & si & y_{t-1} \leq 0.14 \\
-    \alpha_0 + \beta deprec^{gt}_t  + \alpha_1 inf^{gt}_{t-1} + \alpha_2 inf^{eua}_t + \alpha_3 ciclo^{gt}_t & si & inf^{gt}_{t-1} & si & 0.14 < y_{t-1} \leq 0.83 \\
-    \alpha_0 + \delta deprec^{gt}_t  + \alpha_1 inf^{gt}_{t-1} + \alpha_2 inf^{eua}_t + \alpha_3 ciclo^{gt}_t & si & inf^{gt}_{t-1} & si & y_{t-1} > 0.83
+$f(x) = 
+\begin{cases}
+    y_t = \alpha y_{t-1} + \alpha x_t + \alpha z_t + k & \text{Si} & y_{t-1} \leq \tau \\
+    y_t = \beta y_{t-1} + \beta x_t + \beta z_t + k & \text[Si] & y_{t-1} > \tau
 \end{cases}
 $
 
