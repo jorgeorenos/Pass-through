@@ -38,9 +38,9 @@ Los umbrales de inflación que definen estado del sistema se obtuvieron siguiend
 
 Régimen inflacionario                                      |coeficiente       |Efecto traspaso
 -----------------------------------------------------------|------------------|---------------
-Inflación alta ($\Delta\%P_{t-1} > 0.14\%$)                |$\delta$          | 0.10405%
-Inflación media ($0.14\% \leq \Delta\%P_{t-1} \leq 0.83\%$)|$\beta$           | 0.0101%
-Inflación baja ($\Delta\%P_{t-1} < 0.14\%$)                |$\gamma+\delta_1$ |-0.14533%
+Inflación alta                                             |$\delta$          | 0.10405%
+Inflación media                                            |$\beta$           | 0.0101%
+Inflación baja                                             |$\gamma$          |-0.14533%
                                            
 El modelo muetra como a partir de que el componente inercial de la inflación cruza de umbral de inflación alta a media el efecto traspaso disminuye y lo hace aún más en el entorno inflacionario bajo.
 
