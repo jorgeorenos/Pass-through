@@ -13,12 +13,12 @@ Dentro de las premisas que se consideraron fue que la inflación en Guatemala ha
 
 En virtud de lo anterior se construyó un modelo autoregresivo por umbrales (TAR  por sus siglas en inglés) el cual tiene la particularidad de no ser lineal debido a que sus parámetros varían en función del estado de una variable del sistema. Para los fines que se persigue la variable que define el cambio en los parámetros del modelo fue la inflación doméstica con lo que la especificación del modelo queda de la siguiente manera:
 
-f(x)= \left\{ \begin{array}{lcc}
+$f(x)= \left\{ \begin{array}{lcc}
              5 &   si  & x \leq 2 \\
              \\ x^2-6x+10 &  si & 2 < x < 5 \\
              \\ 4x-15 &  si  & x \geq 5
              \end{array}
-   \right.
+   \right.$
 
 $\text{Donde}$
 
