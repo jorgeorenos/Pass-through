@@ -1,13 +1,4 @@
-<center>
-<h1>
-Estimación de un modelo autoregresivo por umbrales
-</h1>
-</center>
-
-<center>
-<h2>
-Estimación del efecto traspaso del tipo de cambio a precios
-</h2>
-</center>
+# Estimación de un modelo autorregresivo por umbrales
+## Ejemplo para la estimación del Efecto Traspaso del tipo de cambio a precios (_Pass-through_)
 
 $x = y + 3$
