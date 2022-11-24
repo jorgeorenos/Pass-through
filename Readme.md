@@ -36,5 +36,11 @@ $cilo^{gt}_t \text{ Es el ciclo económico en el periodo t}$
 
 Los umbrales de inflación que definen estado del sistema se obtuvieron siguiendo la metodología expuesta por Chang(1993) y la estimación del modelo dio lo siguientes reseultados:
 
+Régimen inflacionario                                      |Interacción       |Pass-through
+-----------------------------------------------------------|------------------|------------
+Inflación alta ($\Delta\%P_{t-1} > 0.14\%$)                |$\delta$          | 0.10405
+Inflación media ($0.14\% \leq \Delta\%P_{t-1} \leq 0.83\%$)|$\beta$           | 0.0101
+Inflación baja ($\Delta\%P_{t-1} < 0.14\%$)                |$\gamma+\delta_1$ |-0.14533
+
 [^1]: Los bienes trasables son aquellos que pueden ser comercializados en el mercado doméstico como externo.
 [^2]: 4% mas menos 1%
