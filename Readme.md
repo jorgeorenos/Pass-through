@@ -15,7 +15,7 @@ En virtud de lo anterior se construyó un modelo autoregresivo por umbrales (TAR
 
 
 
-$[ u(x) = \begin{cases} \exp{x} & \text{if } x \geq 0 \\ 1 & \text{if } x < 0 \end{cases} \]$
+$$[ u(x) = \begin{cases} \exp{x} & \text{if } x \geq 0 \\ 1 & \text{if } x < 0 \end{cases} \]$$
 
 $\text{Donde}$
 
