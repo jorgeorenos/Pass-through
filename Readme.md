@@ -15,12 +15,11 @@ En virtud de lo anterior se construyó un modelo autoregresivo por umbrales (TAR
 
 
 
-$inf^{gt}_t =  \begin{cases}
+$$inf^{gt}_t =  \begin{cases}
     \alpha_0 + \gamma deprec^{gt}_t  + \alpha_1 inf^{gt}_{t-1} + \alpha_2 inf^{eua}_t + \alpha_3 ciclo^{gt}_t & si & inf^{gt}_{t-1} & si & y_{t-1} \leq 0.14 \\
     \alpha_0 + \beta deprec^{gt}_t  + \alpha_1 inf^{gt}_{t-1} + \alpha_2 inf^{eua}_t + \alpha_3 ciclo^{gt}_t & si & inf^{gt}_{t-1} & si & 0.14 < y_{t-1} \leq 0.83 \\
     \alpha_0 + \delta deprec^{gt}_t  + \alpha_1 inf^{gt}_{t-1} + \alpha_2 inf^{eua}_t + \alpha_3 ciclo^{gt}_t & si & inf^{gt}_{t-1} & si & y_{t-1} > 0.83
-\end{cases}
-$
+\end{cases}$$
 
 $\text{Donde}$
 
